@@ -11,16 +11,23 @@ width of the screen. Due to probable mpv limitations, the window is not able to 
 screen so you will need to drag the window larger manually until it fits the full height of the screens.
 The script will still help you automate the rest of the setup.
 
+
+16:9 = 1.778
+Intended size: 0x100%+0+0 (limited to 100% width by mpv)
+
+
+Test alt method to get current aspect not original, would need the script to run on size change
+local ww, wh = mp.get_osd_size()
+    if ww / wh >= 1.9
+
 ]]--
 
 
 function fullscreen_borderless_window()
-    local ww, wh = mp.get_osd_size()
-    if ww / wh > 1.9 and mp.get_property_number("height") >= 720 then  -- 16:9 = 1.78
-        return
+    if mp.get_property_number("video-aspect") >= 1.9 and mp.get_property_number("height") >= 720 then
+        mp.set_property_native("border", false)
+        mp.set_property("geometry", "100%+0+0")
     end
-    mp.set_property_native("border", false)
-    mp.set_property("geometry", "100%+0+0")  -- intended use (but limited to 100% width): 0x100%+0+0
 end
 
 
